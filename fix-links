@@ -190,3 +190,7 @@ li sys/stdint.h ./stdint.h
 li sys/syslog.h ./syslog.h
 li sys/termios.h ./termios.h
 li sys/ucontext.h ./ucontext.h
+
+ln -sf /freebsd/lib/gcc/x86_64-pc-freebsd9/4.8.5/libgcc.a /freebsd/x86_64-pc-freebsd9/lib/libgcc.a
+ln -sf /freebsd/lib/gcc/x86_64-pc-freebsd9/4.8.5/libgcc_p.a /freebsd/x86_64-pc-freebsd9/lib/libgcc_p.a
+

@@ -7,7 +7,7 @@ ADD fix-links /freebsd/fix-links
 # The header correction etc is because the soft-links are broken in the iso
 #https://lists.freebsd.org/pipermail/freebsd-current/2011-August/026487.html
 RUN apt-get -y update && \
-    apt-get -y install build-essential m4 bison flex && \
+    apt-get -y install build-essential m4 bison flex git vim file libtool automake autoconf autogen pkg-config && \
     mkdir -p /src && \
     mkdir -p /freebsd/x86_64-pc-freebsd9 && \
     mv /freebsd/usr/include /freebsd/x86_64-pc-freebsd9 && \
@@ -21,7 +21,6 @@ ADD gmp-6.0.0a.tar.xz /src/
 ADD mpc-1.0.3.tar.gz /src/
 ADD mpfr-3.1.3.tar.xz /src/
 
-#    sed -i -e 's?namespace __gnu_parallel?#include <sys/types.h>\n&?' /src/gcc-4.8.5/build/x86_64-pc-freebsd9/libstdc++-v3/include/parallel/types.h && 
 RUN cd /src/binutils-2.25.1 && \
     ./configure --enable-libssp --enable-ld --target=x86_64-pc-freebsd9 --prefix=/freebsd && \
     make -j4 && \
@@ -62,3 +61,4 @@ env AS x86_64-pc-freebsd9-as
 env LD x86_64-pc-freebsd9-ld
 env AR x86_64-pc-freebsd9-ar
 env RANLIB x86_64-pc-freebsd9-ranlib
+env HOST x86_64-pc-freebsd9
