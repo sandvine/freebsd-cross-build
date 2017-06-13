@@ -1,0 +1,27 @@
+#!/bin/sh
+
+x() {
+    n=$(basename "$1")
+    [ -f "$n" ] && echo "$n already fetched" || wget "$1"
+}
+x http://ftp.gnu.org/gnu/binutils/binutils-2.25.1.tar.gz
+x http://ftp.gnu.org/gnu/gmp/gmp-6.0.0a.tar.xz
+x http://ftp4.us.freebsd.org/pub/FreeBSD/releases/ISO-IMAGES/9.3/FreeBSD-9.3-RELEASE-amd64-dvd1.iso
+x http://ftp.gnu.org/gnu/mpfr/mpfr-3.1.3.tar.xz
+x http://ftp.gnu.org/gnu/mpc/mpc-1.0.3.tar.gz
+x http://ftp.gnu.org/gnu/gcc/gcc-4.8.5/gcc-4.8.5.tar.bz2
+
+S=$(sha1sum FreeBSD-9.3-RELEASE-amd64-dvd1.iso | awk '{print $1}')
+if [ "$S" != "9332445f4ecfc9ff4095031e0342ee72884493f1" ]
+then
+    >&2 echo "Error: sha1sum does not match"
+    exit 1
+fi
+mkdir -p freebsd
+(cd freebsd; 7z x ../FreeBSD-9.3-RELEASE-amd64-dvd1.iso usr/include)
+(cd freebsd; 7z x ../FreeBSD-9.3-RELEASE-amd64-dvd1.iso usr/lib)
+(cd freebsd; 7z x ../FreeBSD-9.3-RELEASE-amd64-dvd1.iso lib)
+
+docker build -t freebsd-cross-build .
+exit 0
+
